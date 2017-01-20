@@ -1,0 +1,104 @@
+			Variables/Caractéristiques du personnages
+
+-Variable du poids:
+	- 0 = poid léger
+	- 1 = poid standard
+	- 2 = poid lourd
+Cette variable influence la gravitée, la vitesse a laquelle personnage retombe, si il peut tenir sur des structures
+
+-Variable d'énergie :
+	- Jauge d'énergie qui lui permet d'utiliser ses compétance de l'arbres des compétances
+
+-Variable de Saut :
+	- 1 = hauteur de saut standard
+	- 2,3... = dépend des bonus et objet
+cette variable indique la hauteur a laquel le perso peu sauter
+
+-Variable des compétances
+	- 0 = aucune compétance
+	- 1 = première compétance
+	- 2,3... ects
+Cette varible indique le nombre de compétance débloquer
+
+-Variable Vitesse
+	- 1 = Vitesse standard
+	- 2 = Vitesse évolutive en fonction des buff et objet
+Cette variable reste la plupart du temps en 1
+
+
+			Action possible du personnage
+
+-Le personnage peut emmetre des fréquences/ondes sans portée. Celle ci permette d'interagire avec les balises si il se trouve dans leurs range
+-Le personnage peut utiliser les compétances qu'il a débolquer / "Voir Compétance et effet" 
+-Le personnage court "variable vitesse" 
+
+
+
+			Compétance du personnages
+
+-Onde destructive
+	-Dispose d'une certaine range
+	-Effet de destruction de certain objet/Voir rubrique objet
+	-Dispose d'un temps de recharge (Variable Du cooldown changeable)	
+
+-Pas fréquenciel
+	-Permet d'effectuer un double saut
+	-Dispose d'un temps de recharge (Variable Du cooldown changeable)
+
+			Etat du personnage
+-Vivant = 1
+-Mort = il recommence le niveaux = 0
+
+
+
+		Objet/Eléments décore et intéraction
+
+-Mur, objet du décor 
+	-Variable d'état
+	- 1 = indestructible
+	- 2 = destructible
+	-Variable d'action
+	- 1 = Fixe
+	- 2 = Mobile (on peut les faire bouger)
+
+
+			les objets suivant sont indestructible et fixe
+
+-Jump ultra-sonore
+	- Projete le joueur dans une direction si son poids est infèrieur ou égale a 1
+	- a un effet continu sur une zone vertical
+	- objet du décort plat disposer au sol
+
+-Plaque pression
+	- aucun effet si le personnage y passe avec un poid infèrieur ouégale a 1
+	- Si sup 2 alors active une autre "action", Objet/Eléments décore et intéraction
+
+-Porte
+	- état fermer = 0
+	- ouverte = 1
+Celle action s'active par la réussite de l'action plaque pression
+
+			BALISES
+-Carractéristiques communes
+	- dispose d'une range d'interaction pour intéragire avec le personnage (rond)
+	- pour activer les balises il faut que le personnage réalise l'action "Le personnage peut emmetre des fréquences/ondes" dans la range de la balise
+
+-Balise aimantée
+	- attire le personnage vers la balise
+
+-Balise poid lourd
+	- augmente le poid du personnage a 2
+
+-Balise poid léger
+	- diminue le poid du personnage a 0
+
+-Balise de tp
+	- téléporte le personnage sur la deuxième balise de tp
+
+-Balise laser (range verticale/ Trait vertical)
+	-Si le personnage rentre en colision avec le laser il meurt
+	-si le personnage inéragit dans la range , l'orientation du laser change
+
+
+
+
