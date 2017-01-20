@@ -2,9 +2,9 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1280, 1024), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
+    sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML GGJ2017LFT!", sf::Style::Close | sf::Style::Titlebar);
+    window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(60);
 
     while (window.isOpen())
     {
@@ -13,10 +13,14 @@ int main()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+            if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+                window.close();
         }
 
         window.clear();
-        window.draw(shape);
+
+        // Main code here
+
         window.display();
     }
 
