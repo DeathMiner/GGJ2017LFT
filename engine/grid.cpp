@@ -26,7 +26,7 @@ int Grid::getTileByPos(int x, int y) const
 }
 int Grid::convertCoord(float x) const
 {
-	return ((int) round(x / scale));
+	return ((int) x / scale);
 }
 float Grid::unconvertCoord(int x) const
 {

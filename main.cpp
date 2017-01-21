@@ -99,11 +99,11 @@ int main()
             y += level->grid.getScale();
         }
 
-        rectangle.setFillColor(sf::Color(0, 0, 0));
+        /*rectangle.setFillColor(sf::Color(0, 0, 0));
         rectangle.setPosition(sf::Vector2f(level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().x)), level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().y))));
-        window->draw(rectangle);
+        window->draw(rectangle);*/
         rectangle.setFillColor(sf::Color(0, 0, 255));
-        rectangle.setPosition(level->player.getPos());
+        rectangle.setPosition(sf::Vector2f(level->player.getPos().x - level->grid.getScale() / 2, level->player.getPos().y));
         window->draw(rectangle);
 
         level->view.setCenter(1280 / 2, 720 / 2);

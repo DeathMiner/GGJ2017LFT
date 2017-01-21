@@ -27,7 +27,7 @@ void Level::update()
 		player_speed.y = 0;
 	}
 
-	if (grid.getTileByPos(grid.convertCoord(player_pos.x) + 1, grid.convertCoord(player_pos.y)) != 0 && player_speed.x > 0)
+	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) != 0 && player_speed.x > 0)
 	{
 		player_pos.x = grid.unconvertCoord(grid.convertCoord(player_pos.x));
 		player_speed.x = 0;
