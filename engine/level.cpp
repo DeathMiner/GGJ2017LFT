@@ -15,25 +15,25 @@ void Level::update()
 	sf::Vector2f player_pos = player.getPos();
 	sf::Vector2f player_speed = player.getSpeed();
 
-	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y) + 1) != 0 && player_speed.y > 0)
+	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y) + 1) == 1 && player_speed.y > 0)
 	{
 		player_pos.y = grid.unconvertCoord(grid.convertCoord(player_pos.y));
 		player_speed.y = 0;
 	}
 
-	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) != 0 && player_speed.y < 0)
+	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) == 1 && player_speed.y < 0)
 	{
 		player_pos.y = grid.unconvertCoord(grid.convertCoord(player_pos.y) + 1);
 		player_speed.y = 0;
 	}
 
-	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) != 0 && player_speed.x > 0)
+	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) == 1 && player_speed.x > 0)
 	{
 		player_pos.x = grid.unconvertCoord(grid.convertCoord(player_pos.x));
 		player_speed.x = 0;
 	}
 
-	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) != 0 && player_speed.x < 0)
+	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) == 1 && player_speed.x < 0)
 	{
 		player_pos.x = grid.unconvertCoord(grid.convertCoord(player_pos.x) + 1);
 		player_speed.x = 0;
@@ -41,4 +41,10 @@ void Level::update()
 
 	player.setPos(player_pos);
 	player.setSpeed(player_speed);
+
+	if (grid.convertCoord(player.getPos().y) > grid.getSize().y * 2)
+	{
+		player.setPos(sf::Vector2f(0, 0));
+		player.setSpeed(sf::Vector2f(0, 0));
+	}
 }

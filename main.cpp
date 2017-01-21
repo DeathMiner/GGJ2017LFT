@@ -3,8 +3,8 @@
 #include "engine.hpp"
 
 int grid_size = 64;
-int grid_x = 1280 / grid_size;
-int grid_y = 720 / grid_size;
+int grid_x = 20;
+int grid_y = 11;
 int grid[] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -22,14 +22,21 @@ float gravity = 1;
 
 int main()
 {
-    sf::RenderWindow *window = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML GGJ2017LFT!", sf::Style::Close | sf::Style::Titlebar);
-    //window->setVerticalSyncEnabled(true);
+    sf::RenderWindow *window = new sf::RenderWindow(
+        sf::VideoMode(1920, 1080),
+        "SFML GGJ2017LFT!",
+        sf::Style::Close | sf::Style::Titlebar | sf::Style::Fullscreen
+    );
+    window->setVerticalSyncEnabled(true);
     window->setFramerateLimit(60);
 
     Level *level = new Level(sf::Vector3i(grid_x, grid_y, grid_size), grid, sf::Vector2f(0, 0));
 
     int x, y;
     sf::RectangleShape rectangle(sf::Vector2f(level->grid.getScale(), level->grid.getScale()));
+
+    sf::Vector2f camera(0, 0);
+    float camera_smooth = 0.1;
 
     while (window->isOpen())
     {
@@ -106,8 +113,10 @@ int main()
         rectangle.setPosition(sf::Vector2f(level->player.getPos().x - level->grid.getScale() / 2, level->player.getPos().y));
         window->draw(rectangle);
 
-        level->view.setCenter(1280 / 2, 720 / 2);
-        level->view.setSize(1280, 720);
+        camera.x = camera.x * (1 - camera_smooth) + (level->player.getPos().x - level->grid.getScale() / 2) * camera_smooth;
+        camera.y = camera.y * (1 - camera_smooth) + (level->player.getPos().y - level->grid.getScale() / 2) * camera_smooth;
+        level->view.setCenter(camera.x, camera.y);
+        //level->view.setSize(1280, 720);
 
         window->display();
     }
