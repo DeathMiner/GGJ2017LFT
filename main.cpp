@@ -7,10 +7,10 @@ int grid_x = 20;
 int grid_y = 11;
 int grid[] = {
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,1,1,1,1,1,1,0,0,0,0,0,1,1,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,
     0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -30,10 +30,16 @@ int main()
     window->setVerticalSyncEnabled(true);
     window->setFramerateLimit(60);
 
+    sf::Texture texture;
+    texture.loadFromFile("Animation marche.png");
+    int frame = 0;
+
     Level *level = new Level(sf::Vector3i(grid_x, grid_y, grid_size), grid, sf::Vector2f(0, 0));
 
     int x, y;
     sf::RectangleShape rectangle(sf::Vector2f(level->grid.getScale(), level->grid.getScale()));
+    sf::RectangleShape rectanglee(sf::Vector2f(level->grid.getScale(), level->grid.getScale()));
+    rectanglee.setTexture(&texture);
 
     sf::Vector2f camera(0, 0);
     float camera_smooth = 0.1;
@@ -81,6 +87,11 @@ int main()
 
         level->update();
 
+        rectanglee.setTextureRect(sf::IntRect(frame * 128, 0, 128, 128));
+        frame += 1;
+        if (frame > 50)
+            frame = 0;
+
         window->clear();
 
         window->setView(level->view);
@@ -109,9 +120,11 @@ int main()
         /*rectangle.setFillColor(sf::Color(0, 0, 0));
         rectangle.setPosition(sf::Vector2f(level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().x)), level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().y))));
         window->draw(rectangle);*/
-        rectangle.setFillColor(sf::Color(0, 0, 255));
         rectangle.setPosition(sf::Vector2f(level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2, level->player.getPos().y * level->grid.getScale()));
+        rectangle.setFillColor(sf::Color(0, 0, 0));
         window->draw(rectangle);
+        rectanglee.setPosition(sf::Vector2f(level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2, level->player.getPos().y * level->grid.getScale()));
+        window->draw(rectanglee);
 
         camera.x = camera.x * (1 - camera_smooth) + (level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2) * camera_smooth;
         camera.y = camera.y * (1 - camera_smooth) + (level->player.getPos().y * level->grid.getScale() - level->grid.getScale() / 2) * camera_smooth;
