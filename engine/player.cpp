@@ -94,6 +94,27 @@ void Player::update()
 	// Gravity
 	sy += 0.5;
 
+	// Horizontal smoothing
+	if (sx < 0)
+		sx += 1;
+	else if (sx > 0)
+		sx -= 1;
+
+	// Movements
+	if (move_left && move_right)
+	{
+		sx = 0;
+	}
+	else if (move_left)
+	{
+		sx = -10;
+	}
+	else if (move_right)
+	{
+		sx = 10;
+	}
+
+	// Update position according to speed
 	px += sx;
 	py += sy;
 }

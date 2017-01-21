@@ -23,7 +23,7 @@ float gravity = 1;
 int main()
 {
     sf::RenderWindow *window = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML GGJ2017LFT!", sf::Style::Close | sf::Style::Titlebar);
-    window->setVerticalSyncEnabled(true);
+    //window->setVerticalSyncEnabled(true);
     window->setFramerateLimit(60);
 
     Level *level = new Level(sf::Vector3i(grid_x, grid_y, grid_size), grid, sf::Vector2f(0, 0));
@@ -52,11 +52,22 @@ int main()
                 }
                 else if (event.key.code == sf::Keyboard::Left)
                 {
-                    level->player.setSpeed(sf::Vector2f(-15, level->player.getSpeed().y));
+                    level->player.move_left = true;
                 }
                 else if (event.key.code == sf::Keyboard::Right)
                 {
-                    level->player.setSpeed(sf::Vector2f(15, level->player.getSpeed().y));
+                    level->player.move_right = true;
+                }
+            }
+            else if (event.type == sf::Event::KeyReleased)
+            {
+                if (event.key.code == sf::Keyboard::Left)
+                {
+                    level->player.move_left = false;
+                }
+                else if (event.key.code == sf::Keyboard::Right)
+                {
+                    level->player.move_right = false;
                 }
             }
         }

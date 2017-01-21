@@ -9,7 +9,11 @@ class Player
 	float py;
 	float sx = 0;
 	float sy = 0;
+
 public:
+	bool move_left = false;
+	bool move_right = false;
+
 	Player(const sf::Vector2f& spawn);
 
 	void setPos(const sf::Vector2f& new_coords);
