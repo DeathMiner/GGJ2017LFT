@@ -26,11 +26,11 @@ int Grid::getTileByPos(int x, int y) const
 }
 int Grid::convertCoord(float x) const
 {
-	return ((int) x / scale);
+	return ((int) x);
 }
 float Grid::unconvertCoord(int x) const
 {
-	return (x * scale);
+	return (x);
 }
 int Grid::getTile(float x, float y) const
 {

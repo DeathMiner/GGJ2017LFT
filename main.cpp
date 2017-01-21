@@ -55,7 +55,7 @@ int main()
                 }
                 else if (event.key.code == sf::Keyboard::Space)
                 {
-                    level->player.setSpeed(sf::Vector2f(level->player.getSpeed().x, -15));
+                    level->player.setSpeed(sf::Vector2f(level->player.getSpeed().x, -0.15));
                 }
                 else if (event.key.code == sf::Keyboard::Left)
                 {
@@ -86,10 +86,10 @@ int main()
         window->setView(level->view);
 
         y = 0;
-        while (y < level->grid.getSize().y * level->grid.getScale())
+        while (y < level->grid.getSize().y)
         {
             x = 0;
-            while (x < level->grid.getSize().x * level->grid.getScale())
+            while (x < level->grid.getSize().x)
             {
                 if (level->grid.getTile(x, y) == 1)
                 {
@@ -99,22 +99,22 @@ int main()
                 {
                     rectangle.setFillColor(sf::Color(0, 255, 0));
                 }
-                rectangle.setPosition(sf::Vector2f(x, y));
+                rectangle.setPosition(sf::Vector2f(x * level->grid.getScale(), y * level->grid.getScale()));
                 window->draw(rectangle);
-                x += level->grid.getScale();
+                x += 1;
             }
-            y += level->grid.getScale();
+            y += 1;
         }
 
         /*rectangle.setFillColor(sf::Color(0, 0, 0));
         rectangle.setPosition(sf::Vector2f(level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().x)), level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().y))));
         window->draw(rectangle);*/
         rectangle.setFillColor(sf::Color(0, 0, 255));
-        rectangle.setPosition(sf::Vector2f(level->player.getPos().x - level->grid.getScale() / 2, level->player.getPos().y));
+        rectangle.setPosition(sf::Vector2f(level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2, level->player.getPos().y * level->grid.getScale()));
         window->draw(rectangle);
 
-        camera.x = camera.x * (1 - camera_smooth) + (level->player.getPos().x - level->grid.getScale() / 2) * camera_smooth;
-        camera.y = camera.y * (1 - camera_smooth) + (level->player.getPos().y - level->grid.getScale() / 2) * camera_smooth;
+        camera.x = camera.x * (1 - camera_smooth) + (level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2) * camera_smooth;
+        camera.y = camera.y * (1 - camera_smooth) + (level->player.getPos().y * level->grid.getScale() - level->grid.getScale() / 2) * camera_smooth;
         level->view.setCenter(camera.x, camera.y);
         level->view.setSize(1920, 1080);
 

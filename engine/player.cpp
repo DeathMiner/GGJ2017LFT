@@ -32,13 +32,21 @@ void Player::setSpeed(const sf::Vector2f& new_speed)
 void Player::update()
 {
 	// Gravity
-	sy += 0.5;
+	sy += 0.005;
 
 	// Horizontal smoothing
 	if (sx < 0)
-		sx += 1;
+	{
+		sx += 0.01;
+		if (sx > 0)
+			sx = 0;
+	}
 	else if (sx > 0)
-		sx -= 1;
+	{
+		sx -= 0.01;
+		if (sx < 0)
+			sx = 0;
+	}
 
 	// Movements
 	if (move_left && move_right)
@@ -47,11 +55,11 @@ void Player::update()
 	}
 	else if (move_left)
 	{
-		sx = -10;
+		sx = -0.1;
 	}
 	else if (move_right)
 	{
-		sx = 10;
+		sx = 0.1;
 	}
 
 	// Update position according to speed
