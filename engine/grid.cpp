@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include "engine.hpp"
 
 Grid::Grid(const sf::Vector3i& size, int new_data[]):
@@ -25,7 +26,7 @@ int Grid::getTileByPos(int x, int y) const
 }
 int Grid::convertCoord(float x) const
 {
-	return ((int) x / scale);
+	return ((int) round(x / scale));
 }
 float Grid::unconvertCoord(int x) const
 {
