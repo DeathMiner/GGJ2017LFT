@@ -13,7 +13,9 @@ LDFLAGS	+=	-lm
 NAME	=	ggj
 
 SRCS	=	main.cpp \
-			engine/player.cpp
+			engine/player.cpp \
+			engine/level.cpp \
+			engine/grid.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 

@@ -1,21 +1,10 @@
 #ifndef ENGINE_H_
 # define ENGINE_H_
 
-#include <SFML/Graphics.hpp>
+# include <SFML/Graphics.hpp>
 
-class Player
-{
-	sf::Vector2i speed;
-	sf::Vector2i pos;
-public:
-	Player();
-
-	void setPos(const sf::Vector2i new_pos);
-
-	sf::Vector2i getPos() const;
-
-	~Player();
-
-};
+# include <engine/Grid.hpp>
+# include <engine/Level.hpp>
+# include <engine/Player.hpp>
 
 #endif /* !ENGINE_H_ */

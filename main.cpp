@@ -1,65 +1,79 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include "engine.hpp"
 
-int grid_x = 1280 / 64;
-int grid_y = 720 / 64;
-char grid[11][21] = {
-    "00000000000000000000",
-    "00000000000000000000",
-    "00000000000000000000",
-    "00000000000000000000",
-    "00000000000000000000",
-    "00000000000000000000",
-    "00000000000000110000",
-    "00000000000000000000",
-    "00010010000010010011",
-    "00110011000110010001",
-    "11110011111111111111"
+int grid_size = 64;
+int grid_x = 1280 / grid_size;
+int grid_y = 720 / grid_size;
+int grid[] = {
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,
+    0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+    0,0,0,1,0,0,1,0,0,0,0,0,1,0,0,1,0,0,1,1,
+    0,0,1,1,0,0,1,1,0,0,0,1,1,0,0,1,0,0,0,1,
+    1,1,1,1,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1,1
 };
+float gravity = 1;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1280, 720), "SFML GGJ2017LFT!", sf::Style::Close | sf::Style::Titlebar);
-    window.setVerticalSyncEnabled(true);
-    window.setFramerateLimit(60);
+    sf::RenderWindow *window = new sf::RenderWindow(sf::VideoMode(1280, 720), "SFML GGJ2017LFT!", sf::Style::Close | sf::Style::Titlebar);
+    window->setVerticalSyncEnabled(true);
+    window->setFramerateLimit(60);
+
+    Level *level = new Level(sf::Vector3i(grid_x, grid_y, grid_size), grid, sf::Vector2f(0, 0));
 
     int x, y;
+    sf::RectangleShape rectangle(sf::Vector2f(level->grid.getScale(), level->grid.getScale()));
 
-    sf::RectangleShape rectangle(sf::Vector2f(64, 64));
-
-    Player my_player;
-
-    while (window.isOpen())
+    while (window->isOpen())
     {
         sf::Event event;
-        while (window.pollEvent(event))
+        while (window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-                window.close();
+            {
+                window->close();
+            }
             else if (event.type == sf::Event::KeyPressed)
             {
                 if (event.key.code == sf::Keyboard::Escape)
-                    window.close();
+                {
+                    window->close();
+                }
+                else if (event.key.code == sf::Keyboard::Space)
+                {
+                    level->player.setSpeed(sf::Vector2f(level->player.getSpeed().x, -15));
+                }
                 else if (event.key.code == sf::Keyboard::Left)
-                    my_player.setPos(sf::Vector2i(my_player.getPos().x - 1, my_player.getPos().y));
+                {
+                    level->player.setSpeed(sf::Vector2f(-15, level->player.getSpeed().y));
+                }
                 else if (event.key.code == sf::Keyboard::Right)
-                    my_player.setPos(sf::Vector2i(my_player.getPos().x + 1, my_player.getPos().y));
-                else if (event.key.code == sf::Keyboard::Up)
-                    my_player.setPos(sf::Vector2i(my_player.getPos().x, my_player.getPos().y - 1));
-                else if (event.key.code == sf::Keyboard::Down)
-                    my_player.setPos(sf::Vector2i(my_player.getPos().x, my_player.getPos().y + 1));
+                {
+                    level->player.setSpeed(sf::Vector2f(15, level->player.getSpeed().y));
+                }
             }
         }
 
-        window.clear();
+        level->update();
+
+        window->clear();
+
+        window->setView(level->view);
 
         y = 0;
-        while (y < grid_y)
+        while (y < level->grid.getSize().y * level->grid.getScale())
         {
             x = 0;
-            while (x < grid_x)
+            while (x < level->grid.getSize().x * level->grid.getScale())
             {
-                if (grid[y][x] == '1')
+                if (level->grid.getTile(x, y) == 1)
                 {
                     rectangle.setFillColor(sf::Color(255, 0, 0));
                 }
@@ -67,19 +81,25 @@ int main()
                 {
                     rectangle.setFillColor(sf::Color(0, 255, 0));
                 }
-                rectangle.setPosition(sf::Vector2f(x * 64, y * 64));
-                window.draw(rectangle);
-                x += 1;
+                rectangle.setPosition(sf::Vector2f(x, y));
+                window->draw(rectangle);
+                x += level->grid.getScale();
             }
-            y += 1;
+            y += level->grid.getScale();
         }
 
         rectangle.setFillColor(sf::Color(0, 0, 255));
-        rectangle.setPosition(sf::Vector2f(my_player.getPos().x * 64, my_player.getPos().y * 64));
-        window.draw(rectangle);
+        rectangle.setPosition(level->player.getPos());
+        window->draw(rectangle);
 
-        window.display();
+        level->view.setCenter(1280 / 2, 720 / 2);
+        level->view.setSize(1280, 720);
+
+        window->display();
     }
+
+    delete level;
+    delete window;
 
     return 0;
 }
