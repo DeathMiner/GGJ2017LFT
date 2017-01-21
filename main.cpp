@@ -2,7 +2,7 @@
 #include <iostream>
 #include "engine.hpp"
 
-int grid_size = 64;
+int grid_size = 128;
 int grid_x = 20;
 int grid_y = 11;
 int grid[] = {
@@ -116,7 +116,7 @@ int main()
         camera.x = camera.x * (1 - camera_smooth) + (level->player.getPos().x - level->grid.getScale() / 2) * camera_smooth;
         camera.y = camera.y * (1 - camera_smooth) + (level->player.getPos().y - level->grid.getScale() / 2) * camera_smooth;
         level->view.setCenter(camera.x, camera.y);
-        //level->view.setSize(1280, 720);
+        level->view.setSize(1920, 1080);
 
         window->display();
     }
