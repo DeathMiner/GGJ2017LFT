@@ -1,18 +1,19 @@
-CC	=	g++
+CXX	=	g++
 
 RM	=	rm -f
 
-CFLAGS	+=	-Iinclude
-CFLAGS	+=	-Wall -Wextra -Werror
-CFLAGS	+=	-g3
-CFLAGS	+=	-Ofast
+CXXFLAGS	+=	-Iinclude
+CXXFLAGS	+=	-Wall -Wextra -Werror
+CXXFLAGS	+=	-g3
+CXXFLAGS	+=	-Ofast
 
 LDFLAGS	+=	-lsfml-graphics -lsfml-window -lsfml-system
 LDFLAGS	+=	-lm
 
 NAME	=	ggj
 
-SRCS	=	main.cpp
+SRCS	=	main.cpp \
+			engine/player.cpp
 
 OBJS	=	$(SRCS:.cpp=.o)
 
@@ -20,7 +21,7 @@ OBJS	=	$(SRCS:.cpp=.o)
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
+	$(CXX) $(CXXFLAGS) -o $(NAME) $(OBJS) $(LDFLAGS)
 
 clean:
 	$(RM) $(OBJS)
