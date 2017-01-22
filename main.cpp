@@ -30,20 +30,24 @@ int main()
     window->setVerticalSyncEnabled(true);
     window->setFramerateLimit(60);
 
-    sf::Texture text_bg; text_bg.loadFromFile("Map.jpg");
-    sf::Sprite bg(text_bg);
-    sf::Texture text_player_floorleft; text_player_floorleft.loadFromFile("Déplacement vers la droite.png");
-    sf::Texture text_player_floorright; text_player_floorright.loadFromFile("Déplacement vers la gauche.png");
-    int frame = 0;
-    sf::Texture text; text.loadFromFile("Elément cube 128 par 128.png");
+    sf::Texture text_bg;
+    text_bg.loadFromFile("Map.jpg");
+    sf::Sprite sprite_bg(text_bg);
+
+    sf::Texture text_player_floorleft;
+    text_player_floorleft.loadFromFile("Déplacement vers la gauche.png");
+    sf::Texture text_player_floorright;
+    text_player_floorright.loadFromFile("Déplacement vers la droite.png");
+    sf::Sprite sprite_player(text_player_floorright);
+    sprite_player.setTextureRect(sf::IntRect(grid_size, 0, grid_size, grid_size));
+    float frame = 0;
+    sf::Texture text_cube;
+    text_cube.loadFromFile("Elément cube 128 par 128.png");
+    sf::Sprite sprite_cube(text_cube);
 
     Level *level = new Level(sf::Vector3i(grid_x, grid_y, grid_size), grid, sf::Vector2f(0, 0));
 
     int x, y;
-    sf::RectangleShape rectangle(sf::Vector2f(level->grid.getScale(), level->grid.getScale()));
-    rectangle.setTexture(&text);
-    sf::RectangleShape rectanglee(sf::Vector2f(level->grid.getScale(), level->grid.getScale()));
-    rectanglee.setTexture(&text_player_floorleft);
 
     sf::Vector2f camera(0, 0);
     float camera_smooth = 0.1;
@@ -71,10 +75,12 @@ int main()
                 else if (event.key.code == sf::Keyboard::Left)
                 {
                     level->player.move_left = true;
+                    sprite_player.setTexture(text_player_floorleft);
                 }
                 else if (event.key.code == sf::Keyboard::Right)
                 {
                     level->player.move_right = true;
+                    sprite_player.setTexture(text_player_floorright);
                 }
             }
             else if (event.type == sf::Event::KeyReleased)
@@ -92,16 +98,16 @@ int main()
 
         level->update();
 
-        rectanglee.setTextureRect(sf::IntRect(frame * 128, 0, 128, 128));
-        frame += 1;
-        if (frame > 12)
+        sprite_player.setTextureRect(sf::IntRect(int(frame) * 128, 0, 128, 128));
+        frame += (float) 25 / 60;
+        if (frame > 25)
             frame = 0;
 
         window->clear(sf::Color(54, 94, 137));
 
         window->setView(level->view);
 
-        window->draw(bg);
+        window->draw(sprite_bg);
 
         y = 0;
         while (y < level->grid.getSize().y)
@@ -111,8 +117,8 @@ int main()
             {
                 if (level->grid.getTile(x, y) == 1)
                 {
-                    rectangle.setPosition(sf::Vector2f(x * level->grid.getScale(), y * level->grid.getScale()));
-                    window->draw(rectangle);
+                    sprite_cube.setPosition(sf::Vector2f(x * level->grid.getScale(), y * level->grid.getScale()));
+                    window->draw(sprite_cube);
                 }
                 x += 1;
             }
@@ -122,8 +128,8 @@ int main()
         /*rectangle.setFillColor(sf::Color(0, 0, 0));
         rectangle.setPosition(sf::Vector2f(level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().x)), level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().y))));
         window->draw(rectangle);*/
-        rectanglee.setPosition(sf::Vector2f(level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2, level->player.getPos().y * level->grid.getScale()));
-        window->draw(rectanglee);
+        sprite_player.setPosition(sf::Vector2f(level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2, level->player.getPos().y * level->grid.getScale()));
+        window->draw(sprite_player);
 
         camera.x = camera.x * (1 - camera_smooth) + (level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2) * camera_smooth;
         camera.y = camera.y * (1 - camera_smooth) + (level->player.getPos().y * level->grid.getScale() - level->grid.getScale() / 2) * camera_smooth;
