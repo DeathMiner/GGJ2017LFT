@@ -19,24 +19,28 @@ void Level::update()
 	{
 		player_pos.y = grid.unconvertCoord(grid.convertCoord(player_pos.y));
 		player_speed.y = 0;
+		player.airbone = false;
 	}
 
 	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) == 1 && player_speed.y < 0)
 	{
 		player_pos.y = grid.unconvertCoord(grid.convertCoord(player_pos.y) + 1);
 		player_speed.y = 0;
+		player.airbone = false;
 	}
 
 	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) == 1 && player_speed.x > 0)
 	{
 		player_pos.x = grid.unconvertCoord(grid.convertCoord(player_pos.x));
 		player_speed.x = 0;
+		player.airbone = false;
 	}
 
 	if (grid.getTileByPos(grid.convertCoord(player_pos.x), grid.convertCoord(player_pos.y)) == 1 && player_speed.x < 0)
 	{
 		player_pos.x = grid.unconvertCoord(grid.convertCoord(player_pos.x) + 1);
 		player_speed.x = 0;
+		player.airbone = false;
 	}
 
 	player.setPos(player_pos);

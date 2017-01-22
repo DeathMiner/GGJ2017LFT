@@ -59,9 +59,10 @@ int main()
                 {
                     window->close();
                 }
-                else if (event.key.code == sf::Keyboard::Space)
+                else if (event.key.code == sf::Keyboard::Space && !level->player.airbone)
                 {
                     level->player.setSpeed(sf::Vector2f(level->player.getSpeed().x, -0.15));
+                    level->player.airbone = true;
                 }
                 else if (event.key.code == sf::Keyboard::Left)
                 {

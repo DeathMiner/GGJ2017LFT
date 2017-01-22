@@ -13,6 +13,7 @@ class Player
 public:
 	bool move_left = false;
 	bool move_right = false;
+	bool airbone = false;
 
 	Player(const sf::Vector2f& spawn);
 
