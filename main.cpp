@@ -30,16 +30,20 @@ int main()
     window->setVerticalSyncEnabled(true);
     window->setFramerateLimit(60);
 
-    sf::Texture texture;
-    texture.loadFromFile("Animation marche.png");
+    sf::Texture text_bg; text_bg.loadFromFile("Map.jpg");
+    sf::Sprite bg(text_bg);
+    sf::Texture text_player_floorleft; text_player_floorleft.loadFromFile("Déplacement vers la droite.png");
+    sf::Texture text_player_floorright; text_player_floorright.loadFromFile("Déplacement vers la gauche.png");
     int frame = 0;
+    sf::Texture text; text.loadFromFile("Elément cube 128 par 128.png");
 
     Level *level = new Level(sf::Vector3i(grid_x, grid_y, grid_size), grid, sf::Vector2f(0, 0));
 
     int x, y;
     sf::RectangleShape rectangle(sf::Vector2f(level->grid.getScale(), level->grid.getScale()));
+    rectangle.setTexture(&text);
     sf::RectangleShape rectanglee(sf::Vector2f(level->grid.getScale(), level->grid.getScale()));
-    rectanglee.setTexture(&texture);
+    rectanglee.setTexture(&text_player_floorleft);
 
     sf::Vector2f camera(0, 0);
     float camera_smooth = 0.1;
@@ -90,12 +94,14 @@ int main()
 
         rectanglee.setTextureRect(sf::IntRect(frame * 128, 0, 128, 128));
         frame += 1;
-        if (frame > 50)
+        if (frame > 12)
             frame = 0;
 
-        window->clear();
+        window->clear(sf::Color(54, 94, 137));
 
         window->setView(level->view);
+
+        window->draw(bg);
 
         y = 0;
         while (y < level->grid.getSize().y)
@@ -105,14 +111,9 @@ int main()
             {
                 if (level->grid.getTile(x, y) == 1)
                 {
-                    rectangle.setFillColor(sf::Color(255, 0, 0));
+                    rectangle.setPosition(sf::Vector2f(x * level->grid.getScale(), y * level->grid.getScale()));
+                    window->draw(rectangle);
                 }
-                else
-                {
-                    rectangle.setFillColor(sf::Color(0, 255, 0));
-                }
-                rectangle.setPosition(sf::Vector2f(x * level->grid.getScale(), y * level->grid.getScale()));
-                window->draw(rectangle);
                 x += 1;
             }
             y += 1;
@@ -121,9 +122,6 @@ int main()
         /*rectangle.setFillColor(sf::Color(0, 0, 0));
         rectangle.setPosition(sf::Vector2f(level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().x)), level->grid.unconvertCoord(level->grid.convertCoord(level->player.getPos().y))));
         window->draw(rectangle);*/
-        rectangle.setPosition(sf::Vector2f(level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2, level->player.getPos().y * level->grid.getScale()));
-        rectangle.setFillColor(sf::Color(0, 0, 0));
-        window->draw(rectangle);
         rectanglee.setPosition(sf::Vector2f(level->player.getPos().x * level->grid.getScale() - level->grid.getScale() / 2, level->player.getPos().y * level->grid.getScale()));
         window->draw(rectanglee);
 
